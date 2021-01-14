@@ -35,7 +35,7 @@
 
 	if (isset($_POST["btnsaveproduct"])) {
 		$artno = $_POST["artno"];
-		$desc = $_POST["desc"];
+		$desc = $artno." ".$_POST["desc"];
 		$hscode = $_POST["hscode"];
 		$price = $_POST["price"];
 

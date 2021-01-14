@@ -20,7 +20,7 @@
 					</thead>
 					<tbody>
 						<?php
-							$invno = mysqli_query($conn, "SELECT inv_no, COUNT(inv_no) FROM invoices GROUP BY inv_no HAVING COUNT(inv_no) > 1");
+							$invno = mysqli_query($conn, "SELECT inv_no, COUNT(inv_no) FROM invoices GROUP BY inv_no HAVING COUNT(inv_no) >= 1");
 							if (mysqli_num_rows($invno) > 0) {
 								while ($nos = mysqli_fetch_assoc($invno)) {
 									$invoiceno = $nos['inv_no'];

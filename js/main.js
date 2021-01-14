@@ -22,41 +22,47 @@ $(window).ready(function(){
       });
   });
 
-  $("#btn-add-more-products").click(function(e){
+  $(".tbl").on("change", "input", function (e) {  //use event delegation
 
-    e.preventDefault();
-    var html = '<tr>';
-        html += '<td><input type="text" id="itempo" name="itempo[]" placeholder="PO #" class="form-control"></td>';       
-        html += '<td><input type="text" id="itemdesc" name="itemdesc[]" placeholder="Description" class="form-control"></td>';       
-        html += '<td><input type="text" id="itemhscode" name="itemhscode[]" placeholder="HS Code" class="form-control"></td>';       
-        html += '<td><input type="text" id="itemqty" name="itemqty[]" placeholder="qty" class="form-control"></td>';        
-        html += '<td><input type="text" id="itemprice" name="itemprice[]" placeholder="Unit Price" class="form-control"></td>';       
-        html += '<td><input type="text" class="form-control" placeholder="amount" name="itemamount[]" id="itemamount"></td>'; 
-        html += '</tr>';
-
-    $("#tbl-items-append").append(html);
-
+    var tableRow = $(this).closest("tr");  //from input find row
+    var one = Number(tableRow.find(".itemqty").val());  //get first textbox
+    var two = Number(tableRow.find(".itemprice").val());  //get second textbox
+    var total = one * two;  //calculate total
+    tableRow.find(".itemamount").val(total);  //set value
+  });
+ 
+  $("button.add").on("click", function(e) {
+        e.preventDefault();
+     var tbody = $(".tbl tbody");
+     tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
   });
 
-  $("#itemprice").change(function(e){
-    
+  $(".tbl").on("change", "input, select", function(e){
     e.preventDefault();
-    
-    var qty = $("#itemqty").val();
-    var price = $("#itemprice").val();
-    var mult = qty*price;
+    var tableRow = $(this).closest("tr");  //from input find row
+    var desc = tableRow.find(".itemdesc").val();
+    // var desc2 = tableRow.find(".itemdesc");
+    var hscode = tableRow.find(".itemhscode");
+    var price = tableRow.find(".itemprice");  //get first textbox
 
-    $("#itemamount").val(mult);
+    $.ajax({
+      url:"incs/getproductelem.php",
+      type:"post",
+      data:{desc:desc},
+      dataType: "JSON",
+      success: function(res){
+        // $(desc2).val(res.description);
+        $(hscode).val(res.hscode);
+        $(price).val(res.price);
+      
+        console.log(res);
 
-    console.log(mult);
+      }
+    });
+
+    // alert(desc);
 
   });
-
-  // var cloned = $('#tbl-items-append tr:last').clone();
-  //   $("#btn-add-more-products").click(function (e) {
-  //       e.preventDefault();
-  //       cloned.clone().appendTo('#tbl-items-append'); 
-  //   });
 
   $("#invto").change(function(){
     var customer = $("#invto").val();
@@ -81,7 +87,6 @@ $(window).ready(function(){
     });
   }
 
-  
   function getproductlist(){
     $.ajax({
       url:"incs/getproductlist.php",
@@ -133,18 +138,38 @@ $(window).ready(function(){
 
   });
 
-  
-
-  $("#selectfreight").change(function(e){
+  $(".selectfreight").change(function(e){
     e.preventDefault(e);
-    var value = $("#selectfreight").val();
-    alert(value);
+    var value = $(".selectfreight").val();
+    if (value == 'Yes') {
+      $(".isfreightyes").css("display", "block");
+    }else{
+      $(".isfreightyes").css("display", "none");
+    }
+  });
+
+  $(".selectinsurance").change(function(e){
+    e.preventDefault(e);
+    var value = $(".selectinsurance").val();
+    if (value == 'Yes') {
+      $(".isinsuranceyes").css("display", "block");
+    }else{
+      $(".isinsuranceyes").css("display", "none");
+    }
+  });
+
+  $(".selectdiscount").change(function(e){
+    e.preventDefault(e);
+    var value = $(".selectdiscount").val();
+    if (value == 'Yes') {
+      $(".isdiscountyes").css("display", "block");
+    }else{
+      $(".isdiscountyes").css("display", "none");
+    }
   });
 
 
-  $('input#itemdesc').click(function() {
-      alert($(this).attr('id'));
-  });
+
 
   getclientlist();
   getproductlist();

@@ -73,7 +73,7 @@
 			<tr>
 				<td colspan="2">
 					<p>Freight
-					<select name="freight" id="selectfreight" class="form-control">
+					<select name="freight" class="selectfreight form-control">
 						<option value="0">select</option>
 						<option value="No">No</option>
 						<option value="Yes">Yes</option>
@@ -82,7 +82,7 @@
 				</td>
 				<td colspan="2">
 					<p>Insurance
-					<select name="insurance" id="selectinsurance" class="form-control">
+					<select name="insurance" class="selectinsurance form-control">
 						<option value="0">select</option>
 						<option value="No">No</option>
 						<option value="Yes">Yes</option>
@@ -91,7 +91,7 @@
 				</td>
 				<td colspan="2">
 					<p>Discount
-					<select name="discount" id="selectdiscount" class="form-control">
+					<select name="discount" class="selectdiscount form-control">
 						<option value="0">select</option>
 						<option value="No">No</option>
 						<option value="Yes">Yes</option>
@@ -101,37 +101,78 @@
 
 		</table>
 		
-		<table name="invoice" id="tbl-items-append" class="table table-bordered">
-			<tr name="line_items">
-				<td><input type="text" id="itempo" name="itempo[]" placeholder="PO #" class="form-control"></td>
-				<td><input type="text" id="itemdesc" name="itemdesc[]" placeholder="Description" class="form-control"></td>
-				<td><input type="text" id="itemhscode" name="itemhscode[]" placeholder="HS Code" class="form-control"></td>
-				<td><input type="text" id="itemqty" name="itemqty[]" placeholder="qty" class="form-control"></td>
-				<td><input type="text" id="itemprice" name="itemprice[]" placeholder="Unit Price" class="form-control"></td>
-				<td style="width: 120px;"><input type="text" class="form-control" placeholder="amount" name="itemamount" id="itemamount">
+		<table name="invoice" id="tbl-items-append" class="table table-bordered tbl">
+			<tbody>
+				<tr name="line_items">
+				<td><input type="text" class="itempo form-control" name="itempo[]" placeholder="PO #"></td>
+				<td>
+					<!-- <input type="text" class="itemdesc form-control" name="itemdesc[]" placeholder="Description"> -->
+					
+					<select name="itemdesc[]" class="itemdesc form-control selectpicker" data-show-subtext="true" data-live-search="true">
+						<option value="0">select</option>
+						<?php
+							$selectall = mysqli_query($conn, "SELECT * FROM products");
+							while ($products = mysqli_fetch_array($selectall)) {
+								?>
+								<option data-subtext="<?php echo $products['description'];?>"><?php echo $products["description"];?></option>
+								<?php
+							}
+						?>
+					</select>
+
+				</td>
+				<td><input type="text" class="itemhscode form-control" readonly name="itemhscode[]" placeholder="HS Code"></td>
+				<td><input type="text" class="itemqty form-control" name="itemqty[]" placeholder="qty" class="form-control"></td>
+				<td><input type="text" class="itemprice form-control" readonly name="itemprice[]" placeholder="Unit Price"></td>
+				<td style="width: 120px;"><input type="text" placeholder="amount" name="itemamount" readonly class="itemamount form-control">
 				</td>
 			</tr>
+			</tbody>
 		</table>
 
 		<div class="row my-2">
 			<div class="col-md-12 text-center">
-				<button class="btn btn-success" id="btn-add-more-products"><i class="fas fa-plus-circle mx-2"></i>Add More Product(s) </button>
+				<button class="btn btn-success add" id="btn-add-more-products"><i class="fas fa-plus-circle mx-2"></i>Add More Product(s) </button>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-4 isfreightyes">
-				<p>Fraight: <input type="text" name="fraamount" class="form-control"></p>
+				<p>Fraight: <input type="text" name="fraamount" class="form-control fraamount"></p>
 			</div>
 			<div class="col-md-4 isinsuranceyes">
-				<p>Insurance: <input type="text" name="fraamount" class="form-control"></p>
+				<p>Insurance: <input type="text" name="insamount" class="form-control insamount"></p>
 			</div>
 			<div class="col-md-4 isdiscountyes">
-				<p>Discount: <input type="text" name="fraamount" class="form-control"></p>
+				<p>Discount: <input type="text" name="disamount" class="form-control disamount"></p>
 			</div>
 		</div>
 
-		<div class="float-right my-3">
+		<table class="table-bordered float-right">
+			<tbody>
+				<tr>
+					<td> Total </td>
+					<td><input type="text" name="ttlamount" class="ttlamount form-control"></td>
+				</tr>
+
+				<tr>
+					<td> Freight </td>
+					<td><input type="text" readonly name="" class=" form-control"></td>
+				</tr>
+
+				<tr>
+					<td> Insurance </td>
+					<td><input type="text" readonly name="" class=" form-control"></td>
+				</tr>
+
+				<tr>
+					<td> Discount </td>
+					<td><input type="text" name="" class=" form-control"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="my-3">
 			<button class="btn btn-info" name="btn_save_invoice"><i class="fas fa-save mr-2"></i>Save Invoice</button>
 		</div>
 
@@ -172,16 +213,16 @@
 
 		echo $count;
 
-		// for ($i=0; $i < $count; $i++) { 
-		// 	$insert = mysqli_query($conn, "INSERT INTO invoices (inv_type, client_name, client_address, inv_notify, inv_pgd, inv_no, inv_date, inv_eform, inv_mos, inv_mop, shipmark,  inv_po, inv_desc, inv_hscode, inv_qty, inv_price, inv_amount, inv_fraight, inv_insurance, inv_discount) VALUES ('$type', '$client', '$cadres', '$notify', '$pgd', '$ino', '$date', '$eform', '$mos', '$mop', '$shipmark', '$po[$i]', '$desc[$i]', '$hscode[$i]', '$qty[$i]', '$price[$i]', '$amount', '$freight', '$insurance', '$discount')") or die(mysqli_error($conn));
+		for ($i=0; $i < $count; $i++) { 
+			$insert = mysqli_query($conn, "INSERT INTO invoices (inv_type, client_name, client_address, inv_notify, inv_pgd, inv_no, inv_date, inv_eform, inv_mos, inv_mop, shipmark,  inv_po, inv_desc, inv_hscode, inv_qty, inv_price, inv_amount, inv_fraight, inv_insurance, inv_discount) VALUES ('$type', '$client', '$cadres', '$notify', '$pgd', '$ino', '$date', '$eform', '$mos', '$mop', '$shipmark', '$po[$i]', '$desc[$i]', '$hscode[$i]', '$qty[$i]', '$price[$i]', '$amount', '$freight', '$insurance', '$discount')") or die(mysqli_error($conn));
 
-		// 	if ($insert) {
-		// 		echo "insertion successfull...";
-		// 	}else{
-		// 		echo "insertion failed...";
-		// 	}
+			if ($insert) {
+				echo "insertion successfull...";
+			}else{
+				echo "insertion failed...";
+			}
 
-		// }
+		}
 
 	}
 
