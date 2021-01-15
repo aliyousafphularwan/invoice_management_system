@@ -29,19 +29,82 @@ $(window).ready(function(){
     var two = Number(tableRow.find(".itemprice").val());  //get second textbox
     var total = one * two;  //calculate total
     tableRow.find(".itemamount").val(total);  //set value
+
+    calcTotal();
+    totalpayable();
+
   });
  
+  function calcTotal(){
+    var sum = 0;
+    $(".itemamount").each(function(){
+      sum += parseFloat($(this).val());
+    });
+    $('.ttlamount').val(sum);
+  }
+
+  function totalpayable(){
+    var ttl = Number($(".ttlamount").val());
+    var fre = Number($(".selectfreight").val());
+    var ins = Number($(".selectinsurance").val());
+    var disc = Number($(".selectdiscount").val());
+    var final = (ttl + fre + ins) - disc;
+
+    $(".ttlvalue").val(final);
+
+  }
+
+  $(".selectfreight").change(function(e){
+    // alert("feright value changed");
+
+    e.preventDefault();
+    var fre = Number($(".selectfreight").val());
+    var finalval = $(".ttlvalue").val();
+    var res = finalval - fre;
+
+    $(".ttlvalue").val(res);
+
+    console.log(res);
+
+  });
+  $(".selectinsurance").change(function(e){
+    // alert("insurance value changed");
+
+    e.preventDefault();
+    var ins = Number($(".selectinsurance").val());
+    var finalval = $(".ttlvalue").val();
+    var res = finalval - ins;
+
+    $(".ttlvalue").val(res);
+
+    console.log(res);
+
+  });
+  $(".selectdiscount").change(function(e){
+    // alert("discount value changed");
+
+    e.preventDefault();
+    var disc= Number($("selectdiscount").val());
+    var finalval = $(".ttlvalue").val();
+    var res = finalval - disc;
+
+    $(".ttlvalue").val(res);
+
+    console.log(res);
+
+  });
+
   $("button.add").on("click", function(e) {
         e.preventDefault();
      var tbody = $(".tbl tbody");
      tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
   });
 
-  $(".tbl").on("change", "input, select", function(e){
+  $(".tbl").on("change", "input", function(e){
     e.preventDefault();
     var tableRow = $(this).closest("tr");  //from input find row
     var desc = tableRow.find(".itemdesc").val();
-    // var desc2 = tableRow.find(".itemdesc");
+    var desc2 = tableRow.find(".itemdesc");
     var hscode = tableRow.find(".itemhscode");
     var price = tableRow.find(".itemprice");  //get first textbox
 
@@ -51,7 +114,7 @@ $(window).ready(function(){
       data:{desc:desc},
       dataType: "JSON",
       success: function(res){
-        // $(desc2).val(res.description);
+        $(desc2).val(res.description);
         $(hscode).val(res.hscode);
         $(price).val(res.price);
       
@@ -59,10 +122,34 @@ $(window).ready(function(){
 
       }
     });
-
-    // alert(desc);
-
   });
+
+  // $(".tbl").on("keyup", ".itemdesc", function(e){
+  //     e.preventDefault();
+  //     var tableRow = $(this).closest("tr");  //from input find row
+  //     var desc = tableRow.find(".itemdesc").val();
+
+  //     console.log(desc);
+
+  //     $.ajax({
+  //       url: "incs/productlivesearch.php",
+  //       type: "post",
+  //       data: {desc:desc},
+  //       dataType: "JSON",
+  //       success: function(res){
+
+  //         var len = res.length;
+  //         $(".plist").empty();
+  //         for (var i = 0; i < len; i++) {
+  //           $(".plist").append("<li>"+res[i]+"</li>");
+  //         }
+
+  //         // $(".itemdesc").val(res);
+  //         // console.log(res);
+  //       }
+  //     });
+
+  // });
 
   $("#invto").change(function(){
     var customer = $("#invto").val();
@@ -158,18 +245,34 @@ $(window).ready(function(){
     }
   });
 
-  $(".selectdiscount").change(function(e){
+  $(".mos").change(function(e){
     e.preventDefault(e);
-    var value = $(".selectdiscount").val();
-    if (value == 'Yes') {
-      $(".isdiscountyes").css("display", "block");
-    }else{
-      $(".isdiscountyes").css("display", "none");
+    var value = $(".mos").val();
+    
+    if (value == 'By Air' || value == 'By DHL Courier' || value == 'By UPS Courier') {
+      $(".awbyes").css("display", "block");
+      $(".blyes").css("display", "none");
     }
+    
+    if (value == 'By Sea') {
+      $(".awbyes").css("display", "none");
+      $(".blyes").css("display", "block");
+    }
+
   });
 
 
+  $("button.btn-add-more").on("click", function(e) {
+    e.preventDefault();
+     var tbody = $(".tbl-pack tbody");
+     tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
+  });
 
+  $('.datepicker').datepicker();
+
+
+  $(".mgssucc").hide(3500);
+  $(".msgerr").hide(3500);
 
   getclientlist();
   getproductlist();

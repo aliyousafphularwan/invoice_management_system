@@ -9,6 +9,7 @@
 					<ul class="navbar-nav sidebar-links">
 						<li><a href="index.php?page=home">Home</a></li>
 						<li><a href="index.php?page=invoices">Invoice Management</a></li>
+						<li><a href="index.php?page=packing">Packing List</a></li>
 						<li><a href="index.php?page=inventory">Product Management</a></li>
 						<li><a href="index.php?page=clients">Client Management</a></li>
 						<li><a href="index.php?page=production_orders">PO Management</a></li>

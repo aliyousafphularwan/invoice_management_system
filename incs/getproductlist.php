@@ -18,7 +18,7 @@
 					<?php echo $row["hs_code"];?>
 				</div>
 				<div class="col-md-2 text-center">
-					<?php echo $row["price"];?>
+					<?php echo $row["price"]." ".$row["currency"];?>
 				</div>
 				<div class="col-md-2 text-center">
 					<a href="index.php?page=editproduct&pid=<?php echo $row['id'];?>"><i class="fas fa-file-invoice-dollar mx-2 text-success"></i></a>

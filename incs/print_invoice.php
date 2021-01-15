@@ -20,6 +20,8 @@
 <?php
 	$invid = $_GET['invoice_no'];
 	$sum = 0;
+	$cur = "";
+	$fob = "";
 	
 ?>
 
@@ -30,7 +32,22 @@
 
 		$query = mysqli_query($conn, "SELECT * FROM invoices WHERE inv_no = '$invid' LIMIT 1;");
 		while ($row = mysqli_fetch_assoc($query)) {
+			$cur = $row['curreny'];
 			
+			$fre = $row["inv_fraight"];
+			$ins = $row["inv_fraight"];
+
+			if ($fre == 0 && $ins == 0) {
+				$fob = "FOB";
+			}
+			else if($fre > 0){
+				$fob = "C&F";
+			}else if($ins){
+				$fob = "CIF";
+			}
+			
+			// $disc = $row["inv_fraight"];
+
 			?>
 
 					<!-- <p class="invoice-type"><?php echo $row['inv_type']?></p> -->
@@ -68,12 +85,16 @@
 						</td>
 						<td colspan="3" class="p-1">
 							<div class="idateno">
-								<p>INVOICE NO: <span class="text-lite">FL/<?php echo $row['inv_no']?>/<?php echo date('y');?></span> </p>
+								<p>INVOICE NO: <span class="text-lite"><?php echo $row['inv_no']?>/<?php echo date('y');?></span> </p>
 								<p>INVOICE Date: <span class="text-lite"><?php echo date('d/m/Y');?><span></p>
 							</div>
 							<p class="table-bordered border-dark m-1 px-3 py-1">Form "E" No. <?php echo $row['inv_eform'];?></p>
 							<p class="table-bordered border-dark m-1 px-3 py-1">Country of Origin of goods (Pakistan)</p>
-							<p class="table-bordered border-dark m-1 px-3 py-1">Terms of Delivery and payment</p>
+							<p class="table-bordered border-dark m-1 px-3 py-1">
+								Terms of Delivery and payment<br>
+								<span style="font-weight: 500;"><?php echo $row['inv_mos']." with ".$row['inv_mop'];?></span>
+
+							</p>
 							<p class="table-bordered border-dark m-1 px-3 py-1">REX Registration #: <b>PKREXPK20455003</b></p>
 
 							<div class="text-center">
@@ -91,19 +112,19 @@
 	</tr>
 	</table>
 	
-	<table class="w-100 my-1 p-0">
+	<table class="w-100">
 		<thead style="border-bottom: solid 1px #000;">
 			<tr>
 				<th class="text-center p-1"> PO# </th>
 				<th class="text-center p-1" colspan="4"> DESCRIPTION </th>
 				<th class="text-center p-1"> HS CODE </th>
 				<th class="text-center p-1"> QUANTITY </th>
-				<th class="text-center p-1"> PRICE ($) </th>
-				<th class="text-center p-1"> AMOUNT ($) </th>
+				<th class="text-center p-1"> PRICE (<?php echo $cur;?>) </th>
+				<th class="text-center p-1"> AMOUNT (<?php echo $cur;?>) </th>
 			</tr>
 		</thead>
 
-		<tbody>
+		<tbody style="border-bottom: solid 1px #000;">
 			<?php
 				$query2 = mysqli_query($conn, "SELECT inv_po, inv_desc, inv_hscode, inv_qty, inv_price FROM invoices WHERE inv_no = '$invid'");
 				while ($r = mysqli_fetch_assoc($query2)) {
@@ -116,69 +137,46 @@
 							<td class="text-center p-1"> <?php echo $r['inv_price'];?> </td>
 							<td class="text-center p-1"> <?php echo $r['inv_price'] * $r['inv_qty'];?> </td>
 						</tr>
-					<?php
-				}
-
-			?>
-			<tr class="p-2">
-				<td colspan="8" class="text-right">
-					<div class="mx-2">
-						<p class="p-0 m-0"> Freight: </p>
-						<p class="p-0 m-0"> Insurance: </p>
-						<p class="p-0 m-0"> Discount: </p>
-						<p class="p-0 m-0"> Total: </p>
-					</div>
-				</td>
-				<?php
-					$calc = mysqli_query($conn, "SELECT * FROM invoices WHERE inv_no = '$invid'");
-					while ($get = mysqli_fetch_array($calc)) {
-						
-						
-						
-					}
-				?>
-				<td>
-					<p class="p-0 m-0 text-center"> 0 </p>
-					<p class="p-0 m-0 text-center"> 0 </p>
-					<p class="p-0 m-0 text-center"> 0 </p>
-					<p class="p-0 m-0 text-center"> 
 						<?php
-							$q = mysqli_query($conn, "SELECT SUM(inv_price * inv_qty) as sum FROM invoices WHERE inv_no = '$invid'");
-							while ($d = mysqli_fetch_assoc($q)) {
-								echo $d['sum']." $";
-								$num = $d['sum'];
-							}
-						?> 
-					</p>
-				</td>
-			</tr>
-			
+					}
+
+				?>
+
+				<tr>
+					<td colspan="8" class="text-right pt-3">
+						<div class="mx-2">
+							<p class="p-0 m-0"> Freight: </p>
+							<p class="p-0 m-0"> Insurance: </p>
+							<p class="p-0 m-0"> Discount: </p>
+							<p class="p-0 m-0"> Total <?php echo $fob;?> Value <?php echo $cur;?>: </p>
+						</div>
+					</td>
+					<?php
+						$calc = mysqli_query($conn, "SELECT * FROM invoices WHERE inv_no = '$invid'");
+						while ($get = mysqli_fetch_array($calc)) {
+							
+							
+							
+						}
+					?>
+					<td>
+						<p class="p-0 m-0 text-center pt-3"> 0 </p>
+						<p class="p-0 m-0 text-center"> 0 </p>
+						<p class="p-0 m-0 text-center"> 0 </p>
+						<p class="p-0 m-0 text-center"> 
+							<?php
+								$q = mysqli_query($conn, "SELECT SUM(inv_price * inv_qty) as sum FROM invoices WHERE inv_no = '$invid'");
+								while ($d = mysqli_fetch_assoc($q)) {
+									echo $d['sum'];
+									$num = $d['sum'];
+								}
+							?> 
+						</p>
+					</td>
+				</tr>
+
 		</tbody>
 	</table>
-
-	<div class="container">
-		<div class="row table-bordered">
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-				 
-				<div class="row">
-					<div class="col-sm-6">
-						Total FOB Value:
-					</div>
-					<div class="col-sm-6">
-						<?php echo $num;?> $
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
 </div>
 
 <script language="javascript">

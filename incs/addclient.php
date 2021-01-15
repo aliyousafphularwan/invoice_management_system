@@ -5,16 +5,16 @@
 		<table class="table table-borderless">
 			<tr>
 				<td width="10%" class="px-2">
-					<p>First Name <input type="text" name="cfname" id="cfname" class="form-control"></p>
+					<p>First Name <input type="text" name="cfname" id="cfname" required class="form-control"></p>
 				</td>
 				<td width="10%" class="px-2">
-					<p>Last Name <input type="text" name="clname" id="clname" class="form-control"></p>
+					<p>Last Name <input type="text" name="clname" id="clname" required class="form-control"></p>
 				</td>
 			</tr>
 
 			<tr>
 				<td width="10%" class="px-2">
-					<p>Address <input type="text" name="caddress" id="caddress" class="form-control"></p>
+					<p>Address <input type="text" name="caddress" id="caddress" required class="form-control"></p>
 				</td>
 				<td width="10%" class="px-2">
 					<p>Country <select name="ccountry" class="form-control selectpicker countrypicker" data-flag="true" ></select></p>
@@ -23,10 +23,10 @@
 
 			<tr>
 				<td width="10%" class="px-2">
-					<p>Phone (Landline) <input type="text" name="cfone" id="cfone" class="form-control"></p>
+					<p>Phone (Landline) <input type="text" name="cfone" required id="cfone" class="form-control"></p>
 				</td>
 				<td width="10%" class="px-2">
-					<p>Mobile <input type="text" name="cmob" id="cmob" class="form-control"></p>
+					<p>Mobile <input type="text" name="cmob" id="cmob" required class="form-control"></p>
 				</td>
 			</tr>
 			<tr>

@@ -5,7 +5,7 @@
 	$data = array();
 	$desc = $_POST["desc"];
 
-	$getdata = mysqli_query($conn, "SELECT * FROM products WHERE description = '$desc'");
+	$getdata = mysqli_query($conn, "SELECT * FROM products WHERE description LIKE '%$desc%'");
 	if (mysqli_num_rows($getdata) > 0) {
 		while ($row = mysqli_fetch_array($getdata)) {
 			$data["description"] = $row["description"];

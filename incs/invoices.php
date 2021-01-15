@@ -20,23 +20,33 @@
 					</thead>
 					<tbody>
 						<?php
-							$invno = mysqli_query($conn, "SELECT inv_no, COUNT(inv_no) FROM invoices GROUP BY inv_no HAVING COUNT(inv_no) >= 1");
-							if (mysqli_num_rows($invno) > 0) {
-								while ($nos = mysqli_fetch_assoc($invno)) {
-									$invoiceno = $nos['inv_no'];
+							$query = mysqli_query($conn, "SELECT * FROM invoices GROUP BY inv_no;");
+							if (mysqli_num_rows($query) > 0) {
+								while ($row = mysqli_fetch_assoc($query)) {
 									?>
 									<tr>
-										<td><?php echo $invoiceno;?></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td class="text-center"><a href="index.php?page=print_invoice&invoice_no=<?php echo $invoiceno;?>"><i class="fas fa-file-invoice-dollar mx-2 text-success"></i></a>
-											<a href="#"><i class="fas fa-trash-alt mx-2 text-danger"></i></a></td>
+										<td class="text-center"><?php echo $row['inv_no'];?></td>
+										<td class="text-center"><?php echo $row['client_name'];?></td>
+										<td class="text-center"><?php echo $row['inv_date'];?></td>
+										<td class="text-center">
+											<?php
+												$sum = 0;
+												$sum += $row['inv_amount'];
+												echo $row["curreny"].$sum;
+											?>	
+										</td>
+										<td class="text-center">
+											<p>
+												<a href="index.php?page=print_invoice&invoice_no=<?php echo $row['inv_no'];?>"><i class="fas fa-file"></i></a>
+												<a href="index.php?page=delinvoice&invoice_no=<?php echo $row['inv_no'];?>"><i class="fas fa-trash text-danger ml-2"></i></a>
+											</p>
+										</td>
 									</tr>
 									<?php
 								}
-							}
+							}else{
 
+							}
 						?>
 					</tbody>
 				</table>

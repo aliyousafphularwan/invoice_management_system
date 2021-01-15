@@ -30,3 +30,17 @@ body{
 .isdiscountyes{
 	display: none;
 }
+
+.awbyes{
+	display: none;
+}
+.blyes{
+	display: none;
+}
+
+.plist{
+	list-style: none; padding: 0px; 
+	width: 100%; 
+	padding-right: 5%;
+	position: absolute;margin: 0;
+}
