@@ -1,3 +1,7 @@
+<?php
+	$invno = '';
+	$sum = 0;
+?>
 <div class="container">
 	
 	<div class="row">
@@ -8,16 +12,6 @@
 					<div class="col-md-6">
 						<p> 
 							<b>Latest Invoices</b> 
-							<?php
-								$invno = mysqli_query($conn, "SELECT inv_no, COUNT(inv_no) FROM invoices GROUP BY inv_no HAVING COUNT(inv_no) > 1");
-
-								if (mysqli_num_rows($invno) > 0) {
-									while ($nos = mysqli_fetch_assoc($invno)) {
-										
-									}
-								}
-
-							?>
 						</p>
 					</div>
 					<div class="col-md-6 text-right">
@@ -29,36 +23,46 @@
 					<div class="col-md-3">
 						<b>Invoice #</b>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
+						<b>Invoice Date</b>
+					</div>
+					<div class="col-md-3">
 						<b>Client</b>
 					</div>
 					<div class="col-md-3 text-right">
 						<b>Amount</b>
 					</div>
-					<?php
-						$getinvoices = mysqli_query($conn, "SELECT * FROM invoices");
-						if (mysqli_num_rows($getinvoices) > 0) {
-							while ($i = mysqli_fetch_assoc($getinvoices)) {
-								?>
+				</div>
+
+				<?php
+					$getinvs = mysqli_query($conn, "SELECT DISTINCT inv_no, client_name, inv_date, curreny, sum(inv_amount) as result FROM invoices GROUP BY inv_no");
+					if (mysqli_num_rows($getinvs) > 0) {
+						while ($invs = mysqli_fetch_assoc($getinvs)) {
+							$invno = $invs['inv_no'];
+							?>
+							<div class="row">
 								<div class="col-md-3">
-									<?php echo $i['inv_no'];?>
+									<?php echo $invno;?>
 								</div>
-								<div class="col-md-6">
-									<?php echo $i['client_address'];?>
+								<div class="col-md-3">
+									<?php echo $invs['inv_date'];?>
+								</div>
+								<div class="col-md-3">
+									<?php echo $invs['client_name'];?>
 								</div>
 								<div class="col-md-3 text-right">
-									<?php 
-										$total = $i['inv_qty'] * $i['inv_price'];
-										echo $total;
+									<?php
+										
+										echo $invs['curreny']."".$invs['result'];
 									?>
 								</div>
-								<?php
-							}
-						}else{
-							echo "<p class='p-2 bg-danger text-light m-auto rounded'> No Invoice Found. </p>";
+							</div>
+							<?php
 						}
-					?>
-				</div>
+					}else{
+
+					}
+				?>
 
 			</div>
 		</div>

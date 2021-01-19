@@ -23,8 +23,36 @@
 		</div>
 	</div>
 
-	<div id="getproductlist">
+	<!-- <div id="getproductlist">
 		
-	</div>
+	</div> -->
+
+	<?php 
+		$getpro = mysqli_query($conn, "SELECT * FROM products");
+		if (mysqli_num_rows($getpro) > 0) {
+			while ($row = mysqli_fetch_assoc($getpro)) {
+				?>
+				<div class="row">
+					<div class="col-md-2 text-center">
+						<?php echo $row['art_no']?>
+					</div>
+					<div class="col-md-4">
+						<?php echo $row['description']?>
+					</div>
+					<div class="col-md-2 text-center">
+						<?php echo $row['hs_code']?>
+					</div>
+					<div class="col-md-2 text-center">
+						<?php echo $row['currency'].$row['price']?>
+					</div>
+					<div class="col-md-2 text-center">
+						<a href="#"><i class="fa fa-edit"></i></a>
+						<a href="#"><i class="fa fa-trash ml-2 text-danger"></i></a>
+					</div>
+				</div>
+				<?php
+			}
+		}
+	?>
 
 </div>

@@ -20,32 +20,29 @@
 					</thead>
 					<tbody>
 						<?php
-							$query = mysqli_query($conn, "SELECT * FROM invoices GROUP BY inv_no;");
-							if (mysqli_num_rows($query) > 0) {
-								while ($row = mysqli_fetch_assoc($query)) {
+							$sum = 0;
+							$getinv = mysqli_query($conn, "SELECT DISTINCT inv_no, client_name, inv_date, curreny, sum(inv_amount) as result FROM invoices GROUP BY inv_no");
+							if (mysqli_num_rows($getinv) > 0) {
+								while ($inv = mysqli_fetch_assoc($getinv)) {
 									?>
 									<tr>
-										<td class="text-center"><?php echo $row['inv_no'];?></td>
-										<td class="text-center"><?php echo $row['client_name'];?></td>
-										<td class="text-center"><?php echo $row['inv_date'];?></td>
+										<td class="text-center"><?php echo $inv['inv_no'];?></td>
+										<td><?php echo $inv['client_name'];?></td>
+										<td class="text-center"><?php echo $inv['inv_date'];?></td>
 										<td class="text-center">
-											<?php
-												$sum = 0;
-												$sum += $row['inv_amount'];
-												echo $row["curreny"].$sum;
-											?>	
+											<?php 
+												
+												echo $inv['curreny'].$inv["result"];
+											?>		
 										</td>
 										<td class="text-center">
-											<p>
-												<a href="index.php?page=print_invoice&invoice_no=<?php echo $row['inv_no'];?>"><i class="fas fa-file"></i></a>
-												<a href="index.php?page=delinvoice&invoice_no=<?php echo $row['inv_no'];?>"><i class="fas fa-trash text-danger ml-2"></i></a>
-											</p>
+											<a href="index.php?page=print_invoice&invoice_no=<?php echo $inv['inv_no'];?>"><i class="fas fa-file text-info"></i></a>
+											<a href="index.php?page=editinvoice"><i class="fas fa-edit text-dark ml-2"></i></a>
+											<a href="#"><i class="fas fa-trash text-danger ml-1"></i></a>
 										</td>
 									</tr>
 									<?php
 								}
-							}else{
-
 							}
 						?>
 					</tbody>

@@ -17,7 +17,7 @@
 					<p>Address <input type="text" name="caddress" id="caddress" required class="form-control"></p>
 				</td>
 				<td width="10%" class="px-2">
-					<p>Country <select name="ccountry" class="form-control selectpicker countrypicker" data-flag="true" ></select></p>
+					<p>Country <input type="text" name="ccountry" class="form-control"></p>
 				</td>
 			</tr>
 

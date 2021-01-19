@@ -22,6 +22,8 @@
 	$sum = 0;
 	$cur = "";
 	$fob = "";
+	$fre = '';
+	$ins = '';
 	
 ?>
 
@@ -145,9 +147,6 @@
 				<tr>
 					<td colspan="8" class="text-right pt-3">
 						<div class="mx-2">
-							<p class="p-0 m-0"> Freight: </p>
-							<p class="p-0 m-0"> Insurance: </p>
-							<p class="p-0 m-0"> Discount: </p>
 							<p class="p-0 m-0"> Total <?php echo $fob;?> Value <?php echo $cur;?>: </p>
 						</div>
 					</td>
@@ -160,10 +159,8 @@
 						}
 					?>
 					<td>
-						<p class="p-0 m-0 text-center pt-3"> 0 </p>
-						<p class="p-0 m-0 text-center"> 0 </p>
-						<p class="p-0 m-0 text-center"> 0 </p>
-						<p class="p-0 m-0 text-center"> 
+						
+						<p class="p-0 m-0 text-center pt-3"> 
 							<?php
 								$q = mysqli_query($conn, "SELECT SUM(inv_price * inv_qty) as sum FROM invoices WHERE inv_no = '$invid'");
 								while ($d = mysqli_fetch_assoc($q)) {
