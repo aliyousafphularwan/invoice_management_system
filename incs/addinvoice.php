@@ -36,9 +36,8 @@
 			<tr>
 				<td colspan="2"> 
 					<p>Customer
-						<input type="text" class="form-control" id="invto" required name="invto">
-						<!-- <select class="form-control" name="invto">
-							<option></option>
+						<!-- <input type="text" class="form-control" id="invto" required name="invto"> -->
+						<select class="form-control" id="invto" name="invto">
 							<?php 
 								$getclients = mysqli_query($conn, "SELECT * FROM customer");
 								while ($data = mysqli_fetch_assoc($getclients)) {
@@ -47,7 +46,7 @@
 									<?php		
 								}	
 							?>
-						</select> -->
+						</select>
 					</p> 
 				</td>
 				<td colspan="4"> 

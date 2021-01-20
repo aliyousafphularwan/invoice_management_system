@@ -1,5 +1,4 @@
 $(window).ready(function(){
-  var counter = 0;
 
   $("#btnlogin").click(function(){
 
@@ -80,32 +79,6 @@ $(window).ready(function(){
     });
   });
 
-  // $(".tbl").on("keyup", ".itemdesc", function(e){
-  //     e.preventDefault();
-  //     var tableRow = $(this).closest("tr");  //from input find row
-  //     var desc = tableRow.find(".itemdesc").val();
-
-  //     console.log(desc);
-
-  //     $.ajax({
-  //       url: "incs/productlivesearch.php",
-  //       type: "post",
-  //       data: {desc:desc},
-  //       dataType: "JSON",
-  //       success: function(res){
-
-  //         var len = res.length;
-  //         $(".plist").empty();
-  //         for (var i = 0; i < len; i++) {
-  //           $(".plist").append("<li>"+res[i]+"</li>");
-  //         }
-
-  //         // $(".itemdesc").val(res);
-  //         // console.log(res);
-  //       }
-  //     });
-
-  // });
 
   $("#invto").change(function(){
     var customer = $("#invto").val();
@@ -115,75 +88,14 @@ $(window).ready(function(){
       data: {customer:customer},
       dataType: "JSON",
       success: function(res){
-        $("#invto").val(res.fullname);
-        $("#invtoad").val(res.address);
+        //$("#invto").val(res.fullname);
+        $("#invtoad").val(res.address +', '+ res.country);
 
         console.log(customer);
         console.log(res);
       }
     });
   });
-
-  function getclientlist(){
-    $.ajax({
-      url:"incs/getclientlist.php",
-      type:"post",
-      success:function(data){
-        $("#clients-list").html(data);
-      }
-    });
-  }
-
-  function getproductlist(){
-    $.ajax({
-      url:"incs/getproductlist.php",
-      type:"post",
-      success:function(data){
-        $("#getproductlist").html(data);
-      }
-    });
-  }
-
-  // $("#save-invoice").click(function(){
-  //   var invtype = $("#invtype").val();
-  //   var invno = $("#invno").val();
-  //   var invdate = $("#invdate").val();
-  //   var itempo = [];
-  //   var itemdesc = [];
-  //   var itemhscode = [];
-  //   var itemqty = [];
-  //   var itemprice = [];
-  //   var itemamount = [];
-
-  //   $("#itempo").each(function(){
-  //     itempo.push($(this).text());
-  //   });
-  //   $("#itemdesc").each(function(){
-  //     itemdesc.push($(this).text());
-  //   });
-  //   $("#itemhscode").each(function(){
-  //     itemhscode.push($(this).text());
-  //   });
-  //   $("#itemqty").each(function(){
-  //     itemqty.push($(this).text());
-  //   });
-  //   $("#itemprice").each(function(){
-  //     itemprice.push($(this).text());
-  //   });
-  //   $("#itemamount").each(function(){
-  //     itemamount.push($(this).text());
-  //   });
-
-  //   $.ajax({
-  //     url:"incs/saveinvoice.php",
-  //     method:"post",
-  //     data:{invtype:invtype,invno:invno,invdate:invdate,itempo:itempo,itemdesc:itemdesc,itemhscode:itemhscode,itemqty:itemqty,itemprice:itemprice,itemamount:itemamount},
-  //     success:function(res){
-  //       alert("message: "+res);
-  //     }
-  //   });
-
-  // });
 
   $(".selectfreight").change(function(e){
     e.preventDefault(e);
@@ -232,7 +144,5 @@ $(window).ready(function(){
   $(".mgssucc").hide(3500);
   $(".msgerr").hide(3500);
 
-  getclientlist();
-  getproductlist();
 
 });
