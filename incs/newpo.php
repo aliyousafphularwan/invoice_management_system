@@ -17,7 +17,7 @@
 							$getclients = mysqli_query($conn, "SELECT * FROM customer");
 							while ($data = mysqli_fetch_assoc($getclients)) {
 								?>
-								<option value="<?php echo $data['first_name']." ".$data['last_name'];?>"><?php echo $data['first_name']." ".$data['last_name'];?></option>
+								<option value="<?php echo $data['full_name'];?>"><?php echo $data['full_name'];?></option>
 								<?php		
 							}	
 						?>

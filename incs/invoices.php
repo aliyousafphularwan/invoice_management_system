@@ -37,12 +37,14 @@
 										</td>
 										<td class="text-center">
 											<a href="index.php?page=print_invoice&invoice_no=<?php echo $inv['inv_no'];?>"><i class="fas fa-file text-info"></i></a>
-											<a href="index.php?page=editinvoice"><i class="fas fa-edit text-dark ml-2"></i></a>
+											<a href="index.php?page=editinvoice&invno=<?php echo $inv['inv_no'];?>"><i class="fas fa-edit text-dark ml-2"></i></a>
 											<a href="#"><i class="fas fa-trash text-danger ml-1"></i></a>
 										</td>
 									</tr>
 									<?php
 								}
+							}else{
+								echo "<p>no invoices found.</p>";
 							}
 						?>
 					</tbody>

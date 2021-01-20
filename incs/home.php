@@ -94,7 +94,7 @@
 							while ($c = mysqli_fetch_assoc($getclients)) {
 								?>
 								<div class="col-md-3">
-									<?php echo $c['first_name']." ".$c['last_name'];?>
+									<?php echo $c['full_name'];?>
 								</div>
 								<div class="col-md-4">
 									<?php echo $c['address'];?>

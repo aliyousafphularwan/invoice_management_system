@@ -35,7 +35,20 @@
 
 			<tr>
 				<td colspan="2"> 
-					<p>Customer<input type="text" class="form-control" id="invto" required name="invto"></p> 
+					<p>Customer
+						<input type="text" class="form-control" id="invto" required name="invto">
+						<!-- <select class="form-control" name="invto">
+							<option></option>
+							<?php 
+								$getclients = mysqli_query($conn, "SELECT * FROM customer");
+								while ($data = mysqli_fetch_assoc($getclients)) {
+									?>
+									<option value="<?php echo $data['full_name'];?>"><?php echo $data['full_name'];?></option>
+									<?php		
+								}	
+							?>
+						</select> -->
+					</p> 
 				</td>
 				<td colspan="4"> 
 					<p>Shipping Address<input type="text" name="invtoad" id="invtoad" required value="" class="form-control"></p>
@@ -86,23 +99,6 @@
 				</td>
 			</tr>
 
-			<tr>
-				<td colspan="2">
-					<p>Freight
-					<input type="text" value="0" name="freight" required class="selectfreight form-control">
-					</p>
-				</td>
-				<td colspan="2">
-					<p>Insurance
-					<input type="text" value="0" name="insurance" required class="selectinsurance form-control">
-					</p>
-				</td>
-				<td colspan="2">
-					<p>Discount
-					<input type="text" value="0" name="discount" required class="selectdiscount form-control"></p>
-				</td>
-			</tr>
-
 		</table>
 		
 		<table name="invoice" id="tbl-items-append" class="table table-bordered tbl">
@@ -110,8 +106,20 @@
 				<tr name="line_items">
 				<td><input type="text" class="itempo form-control" required name="itempo[]" placeholder="PO #"></td>
 				<td>
-					<input type="text" autocomplete="off" class="itemdesc form-control" required name="itemdesc[]" placeholder="Description">
+					<input type="text" class="itemdesc form-control" required name="itemdesc[]" placeholder="Description">
 					
+					<!-- <select class="form-control select2 itemdesc" name="itemdesc[]">
+			           <option>Select</option> 
+			           <?php
+			           	$getpro = mysqli_query($conn, "SELECT * FROM products");
+			           	while ($prods = mysqli_fetch_assoc($getpro)) {
+			           		?>
+			           		<option><?php echo $prods['description'];?></option>
+			           		<?php
+			           	}
+			           ?>
+			        </select> -->
+
 				</td>
 				<td><input type="text" class="itemhscode form-control" required readonly name="itemhscode[]" placeholder="HS Code"></td>
 				<td><input type="text" class="itemqty form-control" required name="itemqty[]" placeholder="qty" class="form-control"></td>
@@ -165,9 +173,6 @@
 		$currency = $_POST["currency"];
 		$notify = $_POST["notify"];
 		$pgd = $_POST['pgd'];
-		$freight = $_POST['freight'];
-		$insurance = $_POST['insurance'];
-		$discount = $_POST['discount'];
 		$mop = $_POST["mop"];
 		$mos = $_POST["mos"];
 
@@ -180,18 +185,10 @@
 
 		$count = count($po);
 
-		if ($freight == 0 && $insurance == 0) {
-			$total_amount_type = "FOB";
-		}else if($insurance == 0){
-			$total_amount_type = "C&F";
-		}else{
-			$total_amount_type = "CIF";
-		}
-
 		$checkinv = mysqli_query($conn, "SELECT * FROM invoices WHERE inv_no = '$ino'");
 		if (mysqli_num_rows($checkinv) == 0) {
 			for ($i=0; $i < $count; $i++) { 
-				$insert = mysqli_query($conn, "INSERT INTO invoices (inv_type, client_name, client_address, inv_notify, inv_pgd, inv_no, inv_date, inv_eform, inv_mos, inv_mop, shipmark, curreny, inv_po, inv_desc, inv_hscode, inv_qty, inv_price, inv_amount, inv_fraight, inv_insurance, inv_discount) VALUES ('$type', '$client', '$cadres', '$notify', '$pgd', '$ino', '$date', '$eform', '$mos', '$mop', '$shipmark', '$currency', '$po[$i]', '$desc[$i]', '$hscode[$i]', '$qty[$i]', '$price[$i]', '$amount[$i]', '$freight', '$insurance', '$discount')") or die(mysqli_error($conn));
+				$insert = mysqli_query($conn, "INSERT INTO invoices (inv_type, client_name, client_address, inv_notify, inv_pgd, inv_no, inv_date, inv_eform, inv_mos, inv_mop, shipmark, curreny, inv_po, inv_desc, inv_hscode, inv_qty, inv_price, inv_amount) VALUES ('$type', '$client', '$cadres', '$notify', '$pgd', '$ino', '$date', '$eform', '$mos', '$mop', '$shipmark', '$currency', '$po[$i]', '$desc[$i]', '$hscode[$i]', '$qty[$i]', '$price[$i]', '$amount[$i]')") or die(mysqli_error($conn));
 
 				// print_r($amount[$i]."<br>");
 

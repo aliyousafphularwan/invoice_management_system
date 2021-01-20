@@ -4,29 +4,26 @@
 		<h4> New Client's Details </h4>
 		<table class="table table-borderless">
 			<tr>
-				<td width="10%" class="px-2">
-					<p>First Name <input type="text" name="cfname" id="cfname" required class="form-control"></p>
-				</td>
-				<td width="10%" class="px-2">
-					<p>Last Name <input type="text" name="clname" id="clname" required class="form-control"></p>
+				<td width="10%" colspan="2" class="px-2">
+					<p>Full Name <input type="text" autocomplete="off" name="cfname" id="cfname" required class="form-control"></p>
 				</td>
 			</tr>
 
 			<tr>
 				<td width="10%" class="px-2">
-					<p>Address <input type="text" name="caddress" id="caddress" required class="form-control"></p>
+					<p>Address <input type="text" autocomplete="off" name="caddress" id="caddress" required class="form-control"></p>
 				</td>
 				<td width="10%" class="px-2">
-					<p>Country <input type="text" name="ccountry" class="form-control"></p>
+					<p>Country <input type="text" autocomplete="off" name="ccountry" class="form-control"></p>
 				</td>
 			</tr>
 
 			<tr>
 				<td width="10%" class="px-2">
-					<p>Phone (Landline) <input type="text" name="cfone" required id="cfone" class="form-control"></p>
+					<p>Phone (Landline) <input type="text" autocomplete="off" name="cfone" required id="cfone" class="form-control"></p>
 				</td>
 				<td width="10%" class="px-2">
-					<p>Mobile <input type="text" name="cmob" id="cmob" required class="form-control"></p>
+					<p>Mobile <input type="text" name="cmob" autocomplete="off" id="cmob" required class="form-control"></p>
 				</td>
 			</tr>
 			<tr>
@@ -44,7 +41,6 @@
 	if (isset($_POST["btnsaveclient"])) {
 		
 		$fname = $_POST["cfname"];
-		$lname = $_POST["clname"];
 		$address = $_POST["caddress"];
 		$country = $_POST["ccountry"];
 		$phone = $_POST["cfone"];
@@ -54,7 +50,7 @@
 		if (mysqli_num_rows($check) > 0) {
 			echo "<script>alert('customer with same number already exist.');</script>";
 		}else{
-			$insert = mysqli_query($conn, "INSERT INTO customer (first_name, last_name, address, country, phone, mob) VALUES ('$fname', '$lname', '$address', '$country', '$phone', '$mobile')") or die(mysqli_error($conn));
+			$insert = mysqli_query($conn, "INSERT INTO customer (full_name, address, country, phone, mob) VALUES ('$fname', '$address', '$country', '$phone', '$mobile')") or die(mysqli_error($conn));
 			if (!$insert) {
 				echo "<script>alert('insertion error, try again...');</script>" or die(mysqli_error($conn));
 			}else{

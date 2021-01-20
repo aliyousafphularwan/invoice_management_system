@@ -45,54 +45,10 @@ $(window).ready(function(){
 
   function totalpayable(){
     var ttl = Number($(".ttlamount").val());
-    var fre = Number($(".selectfreight").val());
-    var ins = Number($(".selectinsurance").val());
-    var disc = Number($(".selectdiscount").val());
-    var final = (ttl + fre + ins) - disc;
 
-    $(".ttlvalue").val(final);
+    $(".ttlvalue").val(ttl);
 
   }
-
-  $(".selectfreight").change(function(e){
-    // alert("feright value changed");
-
-    e.preventDefault();
-    var fre = Number($(".selectfreight").val());
-    var finalval = $(".ttlvalue").val();
-    var res = finalval - fre;
-
-    $(".ttlvalue").val(res);
-
-    console.log(res);
-
-  });
-  $(".selectinsurance").change(function(e){
-    // alert("insurance value changed");
-
-    e.preventDefault();
-    var ins = Number($(".selectinsurance").val());
-    var finalval = $(".ttlvalue").val();
-    var res = finalval - ins;
-
-    $(".ttlvalue").val(res);
-
-    console.log(res);
-
-  });
-  $(".selectdiscount").change(function(e){
-    // alert("discount value changed");
-
-    e.preventDefault();
-    var disc= Number($("selectdiscount").val());
-    var finalval = $(".ttlvalue").val();
-    var res = finalval - disc;
-
-    $(".ttlvalue").val(res);
-
-    console.log(res);
-
-  });
 
   $("button.add").on("click", function(e) {
         e.preventDefault();
@@ -100,7 +56,7 @@ $(window).ready(function(){
      tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
   });
 
-  $(".tbl").on("change", "input", function(e){
+  $(".tbl").on("change", "input, select", function(e){
     e.preventDefault();
     var tableRow = $(this).closest("tr");  //from input find row
     var desc = tableRow.find(".itemdesc").val();
@@ -157,8 +113,12 @@ $(window).ready(function(){
       url:"incs/getaddress.php",
       type:"post",
       data: {customer:customer},
+      dataType: "JSON",
       success: function(res){
-        $("#invtoad").val(res);
+        $("#invto").val(res.fullname);
+        $("#invtoad").val(res.address);
+
+        console.log(customer);
         console.log(res);
       }
     });
@@ -184,46 +144,46 @@ $(window).ready(function(){
     });
   }
 
-  $("#save-invoice").click(function(){
-    var invtype = $("#invtype").val();
-    var invno = $("#invno").val();
-    var invdate = $("#invdate").val();
-    var itempo = [];
-    var itemdesc = [];
-    var itemhscode = [];
-    var itemqty = [];
-    var itemprice = [];
-    var itemamount = [];
+  // $("#save-invoice").click(function(){
+  //   var invtype = $("#invtype").val();
+  //   var invno = $("#invno").val();
+  //   var invdate = $("#invdate").val();
+  //   var itempo = [];
+  //   var itemdesc = [];
+  //   var itemhscode = [];
+  //   var itemqty = [];
+  //   var itemprice = [];
+  //   var itemamount = [];
 
-    $("#itempo").each(function(){
-      itempo.push($(this).text());
-    });
-    $("#itemdesc").each(function(){
-      itemdesc.push($(this).text());
-    });
-    $("#itemhscode").each(function(){
-      itemhscode.push($(this).text());
-    });
-    $("#itemqty").each(function(){
-      itemqty.push($(this).text());
-    });
-    $("#itemprice").each(function(){
-      itemprice.push($(this).text());
-    });
-    $("#itemamount").each(function(){
-      itemamount.push($(this).text());
-    });
+  //   $("#itempo").each(function(){
+  //     itempo.push($(this).text());
+  //   });
+  //   $("#itemdesc").each(function(){
+  //     itemdesc.push($(this).text());
+  //   });
+  //   $("#itemhscode").each(function(){
+  //     itemhscode.push($(this).text());
+  //   });
+  //   $("#itemqty").each(function(){
+  //     itemqty.push($(this).text());
+  //   });
+  //   $("#itemprice").each(function(){
+  //     itemprice.push($(this).text());
+  //   });
+  //   $("#itemamount").each(function(){
+  //     itemamount.push($(this).text());
+  //   });
 
-    $.ajax({
-      url:"incs/saveinvoice.php",
-      method:"post",
-      data:{invtype:invtype,invno:invno,invdate:invdate,itempo:itempo,itemdesc:itemdesc,itemhscode:itemhscode,itemqty:itemqty,itemprice:itemprice,itemamount:itemamount},
-      success:function(res){
-        alert("message: "+res);
-      }
-    });
+  //   $.ajax({
+  //     url:"incs/saveinvoice.php",
+  //     method:"post",
+  //     data:{invtype:invtype,invno:invno,invdate:invdate,itempo:itempo,itemdesc:itemdesc,itemhscode:itemhscode,itemqty:itemqty,itemprice:itemprice,itemamount:itemamount},
+  //     success:function(res){
+  //       alert("message: "+res);
+  //     }
+  //   });
 
-  });
+  // });
 
   $(".selectfreight").change(function(e){
     e.preventDefault(e);
@@ -267,8 +227,6 @@ $(window).ready(function(){
      var tbody = $(".tbl-pack tbody");
      tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
   });
-
-  $('.datepicker').datepicker();
 
 
   $(".mgssucc").hide(3500);
