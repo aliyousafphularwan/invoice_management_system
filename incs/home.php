@@ -24,7 +24,7 @@
 						<b>Invoice #</b>
 					</div>
 					<div class="col-md-3">
-						<b>Invoice Date</b>
+						<b>Date</b>
 					</div>
 					<div class="col-md-3">
 						<b>Client</b>

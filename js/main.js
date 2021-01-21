@@ -140,6 +140,29 @@ $(window).ready(function(){
      tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
   });
 
+  $(".podesc").keyup(function(e){
+    e.preventDefault();
+    var k = $(this).val();
+    if (k != '') {
+      $.ajax({
+        url:"incs/selectpro.php",
+        type:"post",
+        data:{ keyword:k},
+        success: function(res){
+          console.log(res);
+         $(".suggesstion-box").fadeIn().html(res);
+        }
+      });
+    }else{
+      $(".suggesstion-box").fadeOut();
+    }
+
+  });
+
+  $(document).on('click', '.suggesstion-box li', function(){
+    $(".podesc").val($(this).text());
+    $(".suggesstion-box").fadeOut();
+  })
 
   $(".mgssucc").hide(3500);
   $(".msgerr").hide(3500);

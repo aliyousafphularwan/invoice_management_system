@@ -34,7 +34,10 @@
 			</thead>
 			<tbody>
 				<tr>
-					<th width="80%" class=""> <input type="text" name="po_desc[]" autocomplete="off" class="form-control" placeholder="Description"> </th>
+					<th width="80%" class=""> 
+						<input type="text" name="po_desc[]" class="form-control podesc" placeholder="Description"> 
+						<div class="suggesstion-box"></div>
+					</th>
 					<th width="20%" class=""> <input type="text" name="po_qty[]" autocomplete="off" class="form-control" placeholder="Quantity"> </th>
 				</tr>
 			</tbody>
