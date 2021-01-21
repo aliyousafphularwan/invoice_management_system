@@ -61,7 +61,7 @@ $(window).ready(function(){
     var desc = tableRow.find(".itemdesc").val();
     var desc2 = tableRow.find(".itemdesc");
     var hscode = tableRow.find(".itemhscode");
-    var price = tableRow.find(".itemprice");  //get first textbox
+    var price = tableRow.find(".itemprice"); //get first textbox
 
     $.ajax({
       url:"incs/getproductelem.php",
@@ -133,36 +133,34 @@ $(window).ready(function(){
 
   });
 
+  $(".addpo").on("click", function(e){
 
-  $("button.btn-add-more").on("click", function(e) {
     e.preventDefault();
-     var tbody = $(".tbl-pack tbody");
-     tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
-  });
 
-  $(".podesc").keyup(function(e){
-    e.preventDefault();
-    var k = $(this).val();
-    if (k != '') {
+    var poNo = $(".pono").val();
+    var poDate = $(".podate").val();
+    var poClient = $(".poclient").val();
+    var poDesc = $(".podesc").val();
+    var poQty = $(".poqty").val();
+
+    if (poNo != '' && poDate != '' && poClient != '' && poDesc != '' && poQty != '') {
       $.ajax({
-        url:"incs/selectpro.php",
+        url:"incs/savepo.php",
         type:"post",
-        data:{ keyword:k},
-        success: function(res){
-          console.log(res);
-         $(".suggesstion-box").fadeIn().html(res);
+        data{
+          
+        },
+        success function(res){
+
         }
       });
     }else{
-      $(".suggesstion-box").fadeOut();
+      alert("all fields are mandatory.");
     }
 
   });
 
-  $(document).on('click', '.suggesstion-box li', function(){
-    $(".podesc").val($(this).text());
-    $(".suggesstion-box").fadeOut();
-  })
+
 
   $(".mgssucc").hide(3500);
   $(".msgerr").hide(3500);
