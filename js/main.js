@@ -1,5 +1,7 @@
 $(window).ready(function(){
 
+  var counter = 1;
+
   $("#btnlogin").click(function(){
 
       var uname = $("#uname").val();
@@ -61,7 +63,7 @@ $(window).ready(function(){
     var desc = tableRow.find(".itemdesc").val();
     var desc2 = tableRow.find(".itemdesc");
     var hscode = tableRow.find(".itemhscode");
-    var price = tableRow.find(".itemprice"); //get first textbox
+    var price = tableRow.find(".itemprice");  //get first textbox
 
     $.ajax({
       url:"incs/getproductelem.php",
@@ -78,7 +80,6 @@ $(window).ready(function(){
       }
     });
   });
-
 
   $("#invto").change(function(){
     var customer = $("#invto").val();
@@ -97,26 +98,6 @@ $(window).ready(function(){
     });
   });
 
-  $(".selectfreight").change(function(e){
-    e.preventDefault(e);
-    var value = $(".selectfreight").val();
-    if (value == 'Yes') {
-      $(".isfreightyes").css("display", "block");
-    }else{
-      $(".isfreightyes").css("display", "none");
-    }
-  });
-
-  $(".selectinsurance").change(function(e){
-    e.preventDefault(e);
-    var value = $(".selectinsurance").val();
-    if (value == 'Yes') {
-      $(".isinsuranceyes").css("display", "block");
-    }else{
-      $(".isinsuranceyes").css("display", "none");
-    }
-  });
-
   $(".mos").change(function(e){
     e.preventDefault(e);
     var value = $(".mos").val();
@@ -133,34 +114,29 @@ $(window).ready(function(){
 
   });
 
-  $(".addpo").on("click", function(e){
-
-    e.preventDefault();
-
-    var poNo = $(".pono").val();
-    var poDate = $(".podate").val();
-    var poClient = $(".poclient").val();
-    var poDesc = $(".podesc").val();
-    var poQty = $(".poqty").val();
-
-    if (poNo != '' && poDate != '' && poClient != '' && poDesc != '' && poQty != '') {
-      $.ajax({
-        url:"incs/savepo.php",
-        type:"post",
-        data{
-          
-        },
-        success function(res){
-
-        }
-      });
-    }else{
-      alert("all fields are mandatory.");
-    }
-
+  $("#btn-add-more-products").on("click", function(e) {
+        e.preventDefault();
+     var tbody = $(".tbl-newpo tbody");
+     tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
   });
 
+  $(".tbl-newpo").on("change", ".podesc", function (e) {  //use event delegation
+    e.preventDefault();
+    var tr = $(this).closest("tr");  //from input find row
+    var podsc = tr.find(".podesc").val();
 
+    $.ajax({
+      url: "incs/addnewpo.php",
+      type:"post",
+      data: {podsc:podsc},
+      dataType: "JSON",
+      success: function(res){
+        $(tr.find(".podesc").val(res.description));
+        console.log(res.description);
+      }
+    });
+
+  });
 
   $(".mgssucc").hide(3500);
   $(".msgerr").hide(3500);

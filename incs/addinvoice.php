@@ -105,9 +105,9 @@
 				<tr name="line_items">
 				<td><input type="text" class="itempo form-control" required name="itempo[]" placeholder="PO #"></td>
 				<td>
-					<!-- <input type="text" class="itemdesc form-control" required name="itemdesc[]" placeholder="Description"> -->
+					<input type="text" class="itemdesc form-control" required name="itemdesc[]" placeholder="Description">
 					
-					<select class="form-control select2 itemdesc" name="itemdesc[]">
+					<!-- <select class="form-control select2 itemdesc" name="itemdesc[]">
 			           <option>Select</option> 
 			           <?php
 			           	$getpro = mysqli_query($conn, "SELECT * FROM products");
@@ -117,7 +117,7 @@
 			           		<?php
 			           	}
 			           ?>
-			        </select>
+			        </select> -->
 
 				</td>
 				<td><input type="text" class="itemhscode form-control" required readonly name="itemhscode[]" placeholder="HS Code"></td>

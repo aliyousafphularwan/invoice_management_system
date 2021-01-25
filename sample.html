@@ -1,0 +1,28 @@
+$("#btn-add-more-products").on("click", function(){
+    
+    var tbody = $(".tbl-newpo tbody");
+     tbody.find("tr:eq(0)").clone().appendTo(tbody).find("input").val("");
+
+  });
+
+  $('.tbl-newpo').on("keyup", "#podesc", function(e){
+    e.preventDefault();
+    var tr = $(this).closest("tr");
+    var k = tr.find("#podesc").val();
+    
+    if (k != '') {
+        $.ajax({
+          url:"incs/selectpro.php",
+          type:"post",
+          data:{ keyword:k},
+          success: function(res){
+            console.log(res);
+           $(".suggesstion-box").fadeIn().html(res);
+          }
+        });
+      }
+      else{
+        $(".suggesstion-box").fadeOut();
+      }
+
+  });

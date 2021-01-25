@@ -96,7 +96,7 @@
 								<div class="col-md-3">
 									<?php echo $c['full_name'];?>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-6">
 									<?php echo $c['address'];?>
 								</div>
 								<div class="col-md-3">
